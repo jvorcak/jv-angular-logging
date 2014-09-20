@@ -8,10 +8,18 @@
  * Controller of the jvLoggingApp
  */
 angular.module('jvLoggingApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('MainCtrl', function (jvLogging) {
+    var logger = jvLogging.getLogger();
+
+    var person = {
+        firstName: 'Jan',
+        lastName: 'Vorcak',
+        location: {
+            country: 'Slovakia',
+        }
+    };
+
+    logger.info('Person = ', person);
+    logger.warn('Hello world');
+    logger.error('Error', person);
   });
