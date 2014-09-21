@@ -8,6 +8,7 @@
  * functionality e.g. sending log records through websockets, send them to
  * various services, etc.
  */
+angular.module('jv.angular-logging')
   .service('CustomHandler', function (jvBaseHandler) {
     return function() {
       return angular.extend({

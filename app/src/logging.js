@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('jv.angular-logging')
-  .factory('jvLogging', function($log) {
+  .factory('jvLogging', function() {
 
     var self = {
       CRITICAL: 50,
