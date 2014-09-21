@@ -88,3 +88,43 @@ In your controller, just get an instance of a logger and start using it!
 var logger = jvLogging.getLogger('yourAppLogger');
 logger.log('Message to be logged');
 ```
+
+## Advanced usage ##
+
+### Log Levels ###
+
+You can set the threshold on `handler` and `logger` object by using their `setLevel(lvl)` function causing all messages which are less severe than `lvl` to be ignored. Following table lists the numeric values used by default.
+
+| Level name        | Level value    |
+| ------------- |:--|
+| jvLogging.CRITICAL | 50 | 
+| jvLogging.ERROR | 40 |
+| jvLogging.WARNING | 30 |
+| jvLogging.INFO | 20 |
+| jvLogging.DEBUG | 10 |
+| jvLogging.NOTSET | 0 |
+
+### Formatters ###
+
+`jvFormatter` service helps you to control how your messages are formatted by your handlers. You can create new Formatter by injecting `jvFormatter` and calling it's `create` method.
+
+```
+#!javascript
+var handler = new ConsoleHandler();
+var formatter = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
+                                       jvFormatter.HASH,
+                                       jvFormatter.NAME,
+                                       jvFormatter.MESSAGES)
+handler.setFormatter(formatter);
+```
+
+Following table describes all possible value that can be used in the log output.
+
+| Formatter field        | Description   | Example |
+| ------------- |:-------------|:-------------|
+| jvFormatter.DATE(format, timezone) | Current timestamp formatted based on [format](https://docs.angularjs.org/api/ng/filter/date)  | jvFormatter.Date('HH:mm:ss,sss')  |
+| jvFormatter.LEVEL | Level name ||
+| jvFormatter.LEVEL_NUM | Level number ||
+| jvFormatter.HASH | $window.location.hash ||
+| jvFormatter.MESSAGES | Content to be logged ||
+| jvFormatter.NAME | Logger's name ||
