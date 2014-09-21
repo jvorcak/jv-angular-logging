@@ -85,7 +85,7 @@ angular.module('jv.angular-logging')
 
     self.getLogger = function(name) {
       if(name === undefined) {
-        name = '_defaultLogger';
+        name = 'defaultLogger';
       }
       if(!(name in loggers)) {
         loggers[name] = createLogger(name);

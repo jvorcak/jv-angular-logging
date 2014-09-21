@@ -14,6 +14,7 @@ angular
     $logProvider.debugEnabled(true);
 
     jvLoggingConfigProvider.setDecorateLog(true);
+    jvLoggingConfigProvider.setDecoratorLogger('AnotherLogger');
 
   })
   .run(function(jvLogging, ConsoleHandler, jvFormatter) {

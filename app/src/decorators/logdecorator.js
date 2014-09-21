@@ -9,21 +9,34 @@
  */
 angular.module('jv.angular-logging')
   .config(function ($provide) {
-    $provide.decorator('$log', function ($delegate, jvLog, jvLoggingConfig) {
+    $provide.decorator('$log', function ($delegate, jvLogging, jvLoggingConfig) {
       if(jvLoggingConfig.getDecorateLog()) {
-        $delegate = jvLog;
+        $delegate = jvLogging.getLogger(jvLoggingConfig.getDecoratorLogger());
       }
+      return $delegate;
+    });
+
+    $provide.decorator('jvLog', function ($delegate, ConsoleHandler) {
+      $delegate.addHandler(new ConsoleHandler());
       return $delegate;
     });
   })
   .provider('jvLoggingConfig', function() {
 
     var decorateLog = false;
+    var decoratorLogger;
+
     this.setDecorateLog = function(value) {
       decorateLog = value;
     };
     this.getDecorateLog = function() {
       return decorateLog;
+    };
+    this.setDecoratorLogger = function(name) {
+        decoratorLogger = name;
+    };
+    this.getDecoratorLogger = function() {
+        return decoratorLogger;
     };
 
     this.$get = function jvLoggingConfigFactory() {
