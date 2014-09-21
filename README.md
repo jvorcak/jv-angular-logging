@@ -2,6 +2,14 @@
 
 Angular module which provides you with flexible and powerful logging system. It supports various logger instances, log levels, handlers and formatters.
 
+## Demo ##
+
+[JSFiddle demonstrating logger objects, log levels, formatting](http://jsfiddle.net/04obdyg5/1/).
+
+[JSFiddle demonstrating how $log object can be used with this module (Simple)](http://jsfiddle.net/t0e8z67u/2/).
+
+[JSFiddle demonstrating how $log object can be used with this module (Advanced)](http://jsfiddle.net/t0e8z67u/1/).
+
 ## Installation ##
 
 ### 1) Install with [Bower](http://bower.io/). ###
@@ -85,14 +93,14 @@ logger.log('Message to be logged');
 
 You can set the threshold on `handler` and `logger` object by using their `setLevel(lvl)` function causing all messages which are less severe than `lvl` to be ignored. Following table lists the numeric values used by default.
 
-| Level name        | Level value    |
-| ------------- |:--|
-| jvLogging.CRITICAL | 50 | 
-| jvLogging.ERROR | 40 |
-| jvLogging.WARNING | 30 |
-| jvLogging.INFO | 20 |
-| jvLogging.DEBUG | 10 |
-| jvLogging.NOTSET | 0 |
+| Level name        | Level value    | Text representation (used by jvFormatter.LEVEL) |
+| ------------- |:--|:--|
+| jvLogLevel.CRITICAL | 50 | CRITICAL |
+| jvLogLevel.ERROR | 40 | ERROR |
+| jvLogLevel.WARNING | 30 | WARNING |
+| jvLogLevel.INFO | 20 | INFO |
+| jvLogLevel.DEBUG | 10 | DEBUG |
+| jvLogLevel.NOTSET | 0 | NOTSET |
 
 ### Formatters ###
 
