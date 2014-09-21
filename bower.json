@@ -16,7 +16,7 @@
     "Ján Vorčák <vorcak.jan@gmail.com>"
   ],
   "description": "Angular module which provides you with flexible and powerful logging system. It supports various logger instances, log levels, handlers and formatters.",
-  "main": "dist/jv-angular-logging.min.js",
+  "main": "dist/jv-angular-logging.js",
   "keywords": [
     "angular",
     "logging"

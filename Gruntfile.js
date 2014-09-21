@@ -442,8 +442,8 @@ module.exports = function (grunt) {
   grunt.registerTask('deploy', [
     'clean:deploy',
     'concat:deploy',
-    'ngmin:deploy',
-    'uglify:deploy'
+    'ngmin:deploy'
+    //'uglify:deploy'
   ]);
 
   grunt.registerTask('default', [
