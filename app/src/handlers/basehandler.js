@@ -16,9 +16,9 @@
  *
  */
 angular.module('jv.angular-logging')
-  .service('jvBaseHandler', function(jvFormatter, jvLogging) {
+  .service('jvBaseHandler', function(jvFormatter, jvLogLevel) {
      return {
-        level : jvLogging.NOTSET,
+        level : jvLogLevel.NOTSET,
         formatter : jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
                                      jvFormatter.NAME,
                                      jvFormatter.MESSAGES),

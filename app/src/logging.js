@@ -1,29 +1,9 @@
 'use strict';
 
 angular.module('jv.angular-logging')
-  .factory('jvLogging', function() {
+  .factory('jvLogging', function(jvLogLevel) {
 
-    var self = {
-      CRITICAL: 50,
-      ERROR: 40,
-      WARNING: 30,
-      INFO: 20,
-      DEBUG: 10,
-      NOTSET: 0
-    };
-
-    var levelNames = {
-      50: 'CRITICAL',
-      40: 'ERROR',
-      30: 'WARNING',
-      20: 'INFO',
-      10: 'DEBUG',
-       0: 'NOTSET'
-    };
-
-    self.getLevelName = function(levelNumber) {
-        return levelNames[levelNumber];
-    };
+    var self = {};
 
     // maintain loggers dictionary
     var loggers = {};
@@ -33,27 +13,27 @@ angular.module('jv.angular-logging')
        * Logger instance
        */
       return {
-        level: self.NOTSET,
+        level: jvLogLevel.NOTSET,
         handlers : [],
         info: function() {
             var args = [].slice.call(arguments, 0);
-            this.handle(this.makeRecord(self.INFO, args));
+            this.handle(this.makeRecord(jvLogLevel.INFO, args));
         },
         warn: function(msg) {
             var args = [].slice.call(arguments, 0);
-            this.handle(this.makeRecord(self.WARNING, args));
+            this.handle(this.makeRecord(jvLogLevel.WARNING, args));
         },
         error: function(msg) {
             var args = [].slice.call(arguments, 0);
-            this.handle(this.makeRecord(self.ERROR, args));
+            this.handle(this.makeRecord(jvLogLevel.ERROR, args));
         },
         debug: function(msg) {
             var args = [].slice.call(arguments, 0);
-            this.handle(this.makeRecord(self.DEBUG, args));
+            this.handle(this.makeRecord(jvLogLevel.DEBUG, args));
         },
         log: function(msg) {
             var args = [].slice.call(arguments, 0);
-            this.handle(this.makeRecord(self.NOTSET, args));
+            this.handle(this.makeRecord(jvLogLevel.NOTSET, args));
         },
         makeRecord: function(level, items) {
             return {name: name, level: level, items: items};

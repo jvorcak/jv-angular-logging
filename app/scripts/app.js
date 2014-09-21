@@ -10,12 +10,9 @@
  */
 angular
   .module('jvLoggingApp', ['jv.angular-logging'])
-  .config(function($logProvider, jvLoggingConfigProvider) {
-    $logProvider.debugEnabled(true);
+  .config(function(jvLoggingConfigProvider) {
 
     jvLoggingConfigProvider.setDecorateLog(true);
-    jvLoggingConfigProvider.setDecoratorLogger('AnotherLogger');
-
   })
   .run(function(jvLogging, ConsoleHandler, jvFormatter) {
     var logger = jvLogging.getLogger('AnotherLogger');
