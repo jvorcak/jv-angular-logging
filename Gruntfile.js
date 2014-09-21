@@ -144,7 +144,14 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      deploy: {
+        files: [{
+          src: [
+            '<%= yeoman.dist %>/jv-angular-logging.js'
+          ]
+        }]
+      }
     },
 
     // Add vendor prefixed styles
@@ -238,6 +245,21 @@ module.exports = function (grunt) {
     // concat: {
     //   dist: {}
     // },
+    concat: {
+      deploy: {
+        src: ['<%= yeoman.app %>/src/{,*/}*.js'],
+        dest: '<%= yeoman.dist %>/jv-angular-logging.js',
+      },
+    },
+    uglify: {
+      deploy: {
+        files: {
+          '<%= yeoman.dist %>/jv-angular-logging.min.js': [
+            '<%= yeoman.dist %>/jv-angular-logging.js'
+          ]
+        }
+      }
+    },
 
     imagemin: {
       dist: {
@@ -289,6 +311,12 @@ module.exports = function (grunt) {
           cwd: '.tmp/concat/scripts',
           src: '*.js',
           dest: '.tmp/concat/scripts'
+        }]
+      },
+      deploy: {
+        files: [{
+          expand: true,
+          src: 'dist/jv-angular-logging.js'
         }]
       }
     },
@@ -404,6 +432,13 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'clean:deploy',
+    'concat:deploy',
+    'ngmin:deploy',
+    'uglify:deploy'
   ]);
 
   grunt.registerTask('default', [
