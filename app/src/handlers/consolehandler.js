@@ -12,7 +12,7 @@
  * implementing it's emit method.
  */
 angular.module('jv.angular-logging')
-  .service('ConsoleHandler', function (jvBaseHandler, jvLogLevel) {
+  .service('JvConsoleHandler', function (jvBaseHandler, jvLogLevel) {
     // Public API here
     return function() {
       return angular.extend({

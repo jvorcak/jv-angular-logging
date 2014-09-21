@@ -16,12 +16,12 @@
  *
  */
 angular.module('jv.angular-logging')
-  .service('jvBaseHandler', function(jvFormatter, jvLogLevel) {
+  .service('jvBaseHandler', function(jvFormat, JvFormatter, jvLogLevel) {
      return {
         level : jvLogLevel.NOTSET,
-        formatter : jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
-                                     jvFormatter.NAME,
-                                     jvFormatter.MESSAGES),
+        formatter : new JvFormatter(jvFormat.DATE('HH:mm:ss,sss'),
+                                     jvFormat.NAME,
+                                     jvFormat.MESSAGES),
         handle: function(record) {
             if(record.level >= this.level) {
                 this.emit(record);

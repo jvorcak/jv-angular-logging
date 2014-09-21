@@ -8,7 +8,7 @@
  * Formatter object defines the structure and contents of the log message.
  */
 angular.module('jv.angular-logging')
-  .service('jvFormatter', function($window, $filter, jvLogLevel) {
+  .service('jvFormat', function($window, $filter, jvLogLevel) {
     var self = {
         DATE : function(format, timezone) {
           return $filter('date')(new Date().getTime(), format, timezone);
@@ -27,28 +27,30 @@ angular.module('jv.angular-logging')
         },
         NAME : function(record) {
           return record.name;
-        },
-        create: function() {
-          var data = [].slice.call(arguments, 0);
-          return {
-            format: function(record) {
-                if(data === undefined) {
-                    data = [];
-                }
-                var items = [];
-                for(var i = 0; i < data.length; i++) {
-                    if(data[i] === self.MESSAGES) {
-                        items = items.concat(data[i](record));
-                    } else if (typeof(data[i]) === 'function') {
-                        items.push(data[i](record));
-                    } else {
-                        items.push(data[i]);
-                    }
-                }
-                return items;
-            }
-          };
         }
     };
     return self;
+  })
+  .service('JvFormatter', function(jvFormat) {
+    return function() {
+      var data = [].slice.call(arguments, 0);
+      return {
+        format: function(record) {
+            if(data === undefined) {
+                data = [];
+            }
+            var items = [];
+            for(var i = 0; i < data.length; i++) {
+                if(data[i] === jvFormat.MESSAGES) {
+                    items = items.concat(data[i](record));
+                } else if (typeof(data[i]) === 'function') {
+                    items.push(data[i](record));
+                } else {
+                    items.push(data[i]);
+                }
+            }
+            return items;
+        }
+      };
+    };
   });

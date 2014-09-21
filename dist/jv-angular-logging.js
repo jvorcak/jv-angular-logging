@@ -16,7 +16,7 @@ angular.module('jv.angular-logging', []);
  * # Formatter
  * Formatter object defines the structure and contents of the log message.
  */
-angular.module('jv.angular-logging').service('jvFormatter', [
+angular.module('jv.angular-logging').service('jvFormat', [
   '$window',
   '$filter',
   'jvLogLevel',
@@ -39,30 +39,34 @@ angular.module('jv.angular-logging').service('jvFormatter', [
         },
         NAME: function (record) {
           return record.name;
-        },
-        create: function () {
-          var data = [].slice.call(arguments, 0);
-          return {
-            format: function (record) {
-              if (data === undefined) {
-                data = [];
-              }
-              var items = [];
-              for (var i = 0; i < data.length; i++) {
-                if (data[i] === self.MESSAGES) {
-                  items = items.concat(data[i](record));
-                } else if (typeof data[i] === 'function') {
-                  items.push(data[i](record));
-                } else {
-                  items.push(data[i]);
-                }
-              }
-              return items;
-            }
-          };
         }
       };
     return self;
+  }
+]).service('JvFormatter', [
+  'jvFormat',
+  function (jvFormat) {
+    return function () {
+      var data = [].slice.call(arguments, 0);
+      return {
+        format: function (record) {
+          if (data === undefined) {
+            data = [];
+          }
+          var items = [];
+          for (var i = 0; i < data.length; i++) {
+            if (data[i] === jvFormat.MESSAGES) {
+              items = items.concat(data[i](record));
+            } else if (typeof data[i] === 'function') {
+              items.push(data[i](record));
+            } else {
+              items.push(data[i]);
+            }
+          }
+          return items;
+        }
+      };
+    };
   }
 ]);
 'use strict';
@@ -188,12 +192,13 @@ angular.module('jv.angular-logging').factory('jvLogging', [
  *
  */
 angular.module('jv.angular-logging').service('jvBaseHandler', [
-  'jvFormatter',
+  'jvFormat',
+  'JvFormatter',
   'jvLogLevel',
-  function (jvFormatter, jvLogLevel) {
+  function (jvFormat, JvFormatter, jvLogLevel) {
     return {
       level: jvLogLevel.NOTSET,
-      formatter: jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'), jvFormatter.NAME, jvFormatter.MESSAGES),
+      formatter: new JvFormatter(jvFormat.DATE('HH:mm:ss,sss'), jvFormat.NAME, jvFormat.MESSAGES),
       handle: function (record) {
         if (record.level >= this.level) {
           this.emit(record);
@@ -233,7 +238,7 @@ angular.module('jv.angular-logging').service('jvBaseHandler', [
  * This class extends {@link jvLogging.jvBaseHandler jvBaseHandler} service by
  * implementing it's emit method.
  */
-angular.module('jv.angular-logging').service('ConsoleHandler', [
+angular.module('jv.angular-logging').service('JvConsoleHandler', [
   'jvBaseHandler',
   'jvLogLevel',
   function (jvBaseHandler, jvLogLevel) {
@@ -312,9 +317,9 @@ angular.module('jv.angular-logging').config([
     ]);
     $provide.decorator('jvLogging', [
       '$delegate',
-      'ConsoleHandler',
-      function ($delegate, ConsoleHandler) {
-        $delegate.getLogger().addHandler(new ConsoleHandler());
+      'JvConsoleHandler',
+      function ($delegate, JvConsoleHandler) {
+        $delegate.getLogger().addHandler(new JvConsoleHandler());
         return $delegate;
       }
     ]);

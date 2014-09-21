@@ -68,13 +68,13 @@ angular.module('yourApp', ['jv.angular-logging'])
 
 ```
 angular.module('yourApp', ['jv.angular-logging'])
-  .run(function(jvLogging, jvFormatter) {
+  .run(function(jvLogging, JvFormatter, jvFormat, JvConsoleHandler) {
     var logger = jvLogging.getLogger('yourAppLogger');
-    var handler = new ConsoleHandler();
-    var formatter = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
-                                       jvFormatter.HASH,
-                                       jvFormatter.NAME,
-                                       jvFormatter.MESSAGES);
+    var handler = new JvConsoleHandler();
+    var formatter = new JvFormatter.create(jvFormat.DATE('HH:mm:ss,sss'),
+                                       jvFormat.HASH,
+                                       jvFormat.NAME,
+                                       jvFormat.MESSAGES);
     handler.setFormatter(formatter);
     logger.addHandler(handler);
   });
@@ -93,7 +93,7 @@ logger.log('Message to be logged');
 
 You can set the threshold on `handler` and `logger` object by using their `setLevel(lvl)` function causing all messages which are less severe than `lvl` to be ignored. Following table lists the numeric values used by default.
 
-| Level name        | Level value    | Text representation (used by jvFormatter.LEVEL) |
+| Level name        | Level value    | Text representation (used by jvFormat.LEVEL) |
 | ------------- |:--|:--|
 | jvLogLevel.CRITICAL | 50 | CRITICAL |
 | jvLogLevel.ERROR | 40 | ERROR |
@@ -104,14 +104,14 @@ You can set the threshold on `handler` and `logger` object by using their `setLe
 
 ### Formatters ###
 
-`jvFormatter` service helps you to control how your messages are formatted by your handlers. You can create new Formatter by injecting `jvFormatter` and calling it's `create` method.
+`JvFormatter` service helps you to control how your messages are formatted by your handlers.
 
 ```
-var handler = new ConsoleHandler();
-var formatter = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
-                                       jvFormatter.HASH,
-                                       jvFormatter.NAME,
-                                       jvFormatter.MESSAGES);
+var handler = new JvConsoleHandler();
+var formatter = new JvFormatter(jvFormat.DATE('HH:mm:ss,sss'),
+                                       jvFormat.HASH,
+                                       jvFormat.NAME,
+                                       jvFormat.MESSAGES);
 handler.setFormatter(formatter);
 ```
 
@@ -119,9 +119,9 @@ Following table describes all possible value that can be used in the log output.
 
 | Formatter field        | Description   | Example |
 | ------------- |:-------------|:-------------|
-| jvFormatter.DATE(format, timezone) | Current timestamp formatted based on [format](https://docs.angularjs.org/api/ng/filter/date)  | jvFormatter.Date('HH:mm:ss,sss')  |
-| jvFormatter.LEVEL | Level name ||
-| jvFormatter.LEVEL_NUM | Level number ||
-| jvFormatter.HASH | $window.location.hash ||
-| jvFormatter.MESSAGES | Content to be logged ||
-| jvFormatter.NAME | Logger's name ||
+| jvFormat.DATE(format, timezone) | Current timestamp formatted based on [format](https://docs.angularjs.org/api/ng/filter/date)  | jvFormat.Date('HH:mm:ss,sss')  |
+| jvFormat.LEVEL | Level name ||
+| jvFormat.LEVEL_NUM | Level number ||
+| jvFormat.HASH | $window.location.hash ||
+| jvFormat.MESSAGES | Content to be logged ||
+| jvFormat.NAME | Logger's name ||

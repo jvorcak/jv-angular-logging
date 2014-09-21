@@ -14,13 +14,13 @@ angular
 
     jvLoggingConfigProvider.setDecorateLog(true);
   })
-  .run(function(jvLogging, ConsoleHandler, jvFormatter) {
+  .run(function(jvLogging, JvConsoleHandler, JvFormatter, jvFormat) {
     var logger = jvLogging.getLogger('AnotherLogger');
-    var hdlr = new ConsoleHandler();
+    var hdlr = new JvConsoleHandler();
     logger.addHandler(hdlr);
-    var f = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
-                               jvFormatter.HASH,
-                               jvFormatter.NAME,
-                               jvFormatter.MESSAGES);
+    var f = new JvFormatter(jvFormat.DATE('HH:mm:ss,sss'),
+                            jvFormat.HASH,
+                            jvFormat.NAME,
+                            jvFormat.MESSAGES);
     hdlr.setFormatter(f);
   });
