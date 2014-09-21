@@ -247,7 +247,12 @@ module.exports = function (grunt) {
     // },
     concat: {
       deploy: {
-        src: ['<%= yeoman.app %>/src/{,*/}*.js'],
+        src: [
+              '<%= yeoman.app %>/src/app.js',
+              '<%= yeoman.app %>/src/*.js',
+              '<%= yeoman.app %>/src/handlers/*.js',
+              '<%= yeoman.app %>/src/decorators/*.js'
+        ],
         dest: '<%= yeoman.dist %>/jv-angular-logging.js',
       },
     },
