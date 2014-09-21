@@ -57,7 +57,8 @@ angular.module('jv.angular-logging')
         /**
          * @ngdoc interface
          * @name getFormatter
-         * @returns {jvFormatter} jvFormatter which is used to format log records.
+         * @returns {jvFormatter} jvFormatter which is used to format log
+         * records.
          * @methodOf jvLogging.jvBaseHandler
          */
         getFormatter: function() {

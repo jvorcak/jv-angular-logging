@@ -19,19 +19,19 @@ angular.module('jv.angular-logging')
             var args = [].slice.call(arguments, 0);
             this.handle(this.makeRecord(jvLogLevel.INFO, args));
         },
-        warn: function(msg) {
+        warn: function() {
             var args = [].slice.call(arguments, 0);
             this.handle(this.makeRecord(jvLogLevel.WARNING, args));
         },
-        error: function(msg) {
+        error: function() {
             var args = [].slice.call(arguments, 0);
             this.handle(this.makeRecord(jvLogLevel.ERROR, args));
         },
-        debug: function(msg) {
+        debug: function() {
             var args = [].slice.call(arguments, 0);
             this.handle(this.makeRecord(jvLogLevel.DEBUG, args));
         },
-        log: function(msg) {
+        log: function() {
             var args = [].slice.call(arguments, 0);
             this.handle(this.makeRecord(jvLogLevel.NOTSET, args));
         },

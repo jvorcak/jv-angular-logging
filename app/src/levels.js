@@ -4,7 +4,7 @@ angular
   .module('jv.angular-logging')
   .service('jvLogLevel', function() {
 
-    self = {
+    var self = {
       CRITICAL: 50,
       ERROR: 40,
       WARNING: 30,

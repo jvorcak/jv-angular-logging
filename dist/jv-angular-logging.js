@@ -68,21 +68,20 @@ angular.module('jv.angular-logging').service('jvFormatter', [
 'use strict';
 angular.module('jv.angular-logging').service('jvLog', [
   'jvLogging',
-  'ConsoleHandler',
-  function (jvLogging, ConsoleHandler) {
+  function (jvLogging) {
     return jvLogging.getLogger();
   }
 ]);
 'use strict';
 angular.module('jv.angular-logging').service('jvLogLevel', function () {
-  self = {
-    CRITICAL: 50,
-    ERROR: 40,
-    WARNING: 30,
-    INFO: 20,
-    DEBUG: 10,
-    NOTSET: 0
-  };
+  var self = {
+      CRITICAL: 50,
+      ERROR: 40,
+      WARNING: 30,
+      INFO: 20,
+      DEBUG: 10,
+      NOTSET: 0
+    };
   var levelNames = {};
   levelNames[self.CRITICAL] = 'CRITICAL';
   levelNames[self.ERROR] = 'ERROR';
@@ -113,19 +112,19 @@ angular.module('jv.angular-logging').factory('jvLogging', [
           var args = [].slice.call(arguments, 0);
           this.handle(this.makeRecord(jvLogLevel.INFO, args));
         },
-        warn: function (msg) {
+        warn: function () {
           var args = [].slice.call(arguments, 0);
           this.handle(this.makeRecord(jvLogLevel.WARNING, args));
         },
-        error: function (msg) {
+        error: function () {
           var args = [].slice.call(arguments, 0);
           this.handle(this.makeRecord(jvLogLevel.ERROR, args));
         },
-        debug: function (msg) {
+        debug: function () {
           var args = [].slice.call(arguments, 0);
           this.handle(this.makeRecord(jvLogLevel.DEBUG, args));
         },
-        log: function (msg) {
+        log: function () {
           var args = [].slice.call(arguments, 0);
           this.handle(this.makeRecord(jvLogLevel.NOTSET, args));
         },
@@ -300,16 +299,25 @@ angular.module('jv.angular-logging').service('CustomHandler', [
 angular.module('jv.angular-logging').config([
   '$provide',
   function ($provide) {
-    $provide.decorator('$log', function ($delegate, jvLogging, jvLoggingConfig) {
-      if (jvLoggingConfig.getDecorateLog()) {
-        $delegate = jvLogging.getLogger(jvLoggingConfig.getDecoratorLogger());
+    $provide.decorator('$log', [
+      '$delegate',
+      'jvLogging',
+      'jvLoggingConfig',
+      function ($delegate, jvLogging, jvLoggingConfig) {
+        if (jvLoggingConfig.getDecorateLog()) {
+          $delegate = jvLogging.getLogger(jvLoggingConfig.getDecoratorLogger());
+        }
+        return $delegate;
       }
-      return $delegate;
-    });
-    $provide.decorator('jvLogging', function ($delegate, ConsoleHandler) {
-      $delegate.getLogger().addHandler(new ConsoleHandler());
-      return $delegate;
-    });
+    ]);
+    $provide.decorator('jvLogging', [
+      '$delegate',
+      'ConsoleHandler',
+      function ($delegate, ConsoleHandler) {
+        $delegate.getLogger().addHandler(new ConsoleHandler());
+        return $delegate;
+      }
+    ]);
   }
 ]).provider('jvLoggingConfig', function () {
   var decorateLog = false;

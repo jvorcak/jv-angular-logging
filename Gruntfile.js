@@ -129,6 +129,9 @@ module.exports = function (grunt) {
           jshintrc: 'test/.jshintrc'
         },
         src: ['test/spec/{,*/}*.js']
+      },
+      deploy: {
+        src: ['<%= yeoman.app %>/src/{,*/}*.js']
       }
     },
 
@@ -441,9 +444,10 @@ module.exports = function (grunt) {
 
   grunt.registerTask('deploy', [
     'clean:deploy',
+    'jshint:deploy',
     'concat:deploy',
-    'ngmin:deploy'
-    //'uglify:deploy'
+    'ngmin:deploy',
+    'uglify:deploy'
   ]);
 
   grunt.registerTask('default', [

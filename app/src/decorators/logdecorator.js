@@ -9,17 +9,19 @@
  */
 angular.module('jv.angular-logging')
   .config(function ($provide) {
-    $provide.decorator('$log', function ($delegate, jvLogging, jvLoggingConfig) {
+    $provide.decorator('$log', ['$delegate', 'jvLogging', 'jvLoggingConfig',
+      function ($delegate, jvLogging, jvLoggingConfig) {
       if(jvLoggingConfig.getDecorateLog()) {
         $delegate = jvLogging.getLogger(jvLoggingConfig.getDecoratorLogger());
       }
       return $delegate;
-    });
+    }]);
 
-    $provide.decorator('jvLogging', function ($delegate, ConsoleHandler) {
-      $delegate.getLogger().addHandler(new ConsoleHandler());
-      return $delegate;
-    });
+    $provide.decorator('jvLogging', ['$delegate', 'ConsoleHandler',
+      function ($delegate, ConsoleHandler) {
+        $delegate.getLogger().addHandler(new ConsoleHandler());
+        return $delegate;
+    }]);
   })
   .provider('jvLoggingConfig', function() {
 
