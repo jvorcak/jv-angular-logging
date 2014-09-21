@@ -1,15 +1,26 @@
 {
-  "name": "jv-logging",
-  "version": "0.0.0",
+  "name": "jv.angular-logging",
+  "version": "0.1.0",
   "dependencies": {
-    "angular": "1.2.16",
+    "angular": "1.2.16"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.16",
+    "angular-scenario": "1.2.16",
     "json3": "~3.3.1",
     "es5-shim": "~3.1.0",
     "bootstrap": "~3.1.1"
   },
-  "devDependencies": {
-    "angular-mocks": "1.2.16",
-    "angular-scenario": "1.2.16"
-  },
-  "appPath": "app"
+  "appPath": "app",
+  "authors": [
+    "Ján Vorčák <vorcak.jan@gmail.com>"
+  ],
+  "description": "Angular module which provides you with flexible and powerful logging system. It supports various logger instances, log levels, handlers and formatters.",
+  "main": "dist/jv-angular-logging.min.js",
+  "keywords": [
+    "angular",
+    "logging"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jvorcak/jv-angular-logging"
 }
