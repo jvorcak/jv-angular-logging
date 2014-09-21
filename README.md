@@ -33,7 +33,35 @@ jvLog.info('This is an example of log message');
 jvLog.warn('Let\'s log some object', {firstName: 'Jan', lastName: 'Vorcak'});
 ```
 
-### 2) Decorate `$log` instance and continue using it in your application. ###
+### 2) Decorate `$log` instance. ###
+
+By default, this module tries not to affect the default behavior of `$log` service. You can use `jvLog` and take advantage of this module's functionality while still using `$log` or `console` object elsewhere. However, if you want to keep using `$log` service and set various handlers and formatters, you can allow this module to decorate it.
+
+```
+#!javascript
+angular.module('yourApp', ['jv.angular-logging'])
+  .config(function(jvLoggingConfigProvider) {
+    jvLoggingConfigProvider.setDecorateLog(true);
+  });
+```
+
+Once done, you can just continue using `$log` service in your controllers.
+
+```
+#!javascript
+$log.warn('Warrning message');
+```
+
+By default, `$log` object is replaced with `defaultLogger` (the same logger instance as `jvLog` or `jvLogging.getLogger()`. You can change this behavior by using following configuration.
+
+```
+#!javascript
+angular.module('yourApp', ['jv.angular-logging'])
+  .config(function(jvLoggingConfigProvider) {
+    jvLoggingConfigProvider.setDecorateLog(true);
+    jvLoggingConfigProvider.setDecoratorLogger('yourAppLogger');
+  });
+```
 
 ### 3) Manually create and configure your logger objects, for instance in your `run` method. ###
 
@@ -42,7 +70,7 @@ jvLog.warn('Let\'s log some object', {firstName: 'Jan', lastName: 'Vorcak'});
 
 angular.module('yourApp', ['jv.angular-logging'])
   .run(function(jvLogging, jvFormatter) {
-    var logger = jvLogging.getLogger('yourAppHandler');
+    var logger = jvLogging.getLogger('yourAppLogger');
     var handler = new ConsoleHandler();
     var formatter = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
                                        jvFormatter.HASH,
@@ -53,3 +81,10 @@ angular.module('yourApp', ['jv.angular-logging'])
   });
 ```
 
+In your controller, just get an instance of a logger and start using it!
+
+```
+#!javascript
+var logger = jvLogging.getLogger('yourAppLogger');
+logger.log('Message to be logged');
+```
