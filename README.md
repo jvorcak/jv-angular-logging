@@ -4,11 +4,11 @@ Angular module which provides you with flexible and powerful logging system. It 
 
 ## Demo ##
 
-[JSFiddle demonstrating logger objects, log levels, formatting](http://jsfiddle.net/04obdyg5/1/).
+[JSFiddle demonstrating logger objects, log levels, formatting](http://jsfiddle.net/04obdyg5/2/).
 
 [JSFiddle demonstrating how $log object can be used with this module (Simple)](http://jsfiddle.net/t0e8z67u/2/).
 
-[JSFiddle demonstrating how $log object can be used with this module (Advanced)](http://jsfiddle.net/t0e8z67u/1/).
+[JSFiddle demonstrating how $log object can be used with this module (Advanced)](http://jsfiddle.net/t0e8z67u/3/).
 
 ## Installation ##
 
