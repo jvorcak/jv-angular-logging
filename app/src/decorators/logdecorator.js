@@ -16,8 +16,8 @@ angular.module('jv.angular-logging')
       return $delegate;
     });
 
-    $provide.decorator('jvLog', function ($delegate, ConsoleHandler) {
-      $delegate.addHandler(new ConsoleHandler());
+    $provide.decorator('jvLogging', function ($delegate, ConsoleHandler) {
+      $delegate.getLogger().addHandler(new ConsoleHandler());
       return $delegate;
     });
   })

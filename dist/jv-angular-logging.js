@@ -19,14 +19,14 @@ angular.module('jv.angular-logging', []);
 angular.module('jv.angular-logging').service('jvFormatter', [
   '$window',
   '$filter',
-  'jvLogging',
-  function ($window, $filter, jvLogging) {
+  'jvLogLevel',
+  function ($window, $filter, jvLogLevel) {
     var self = {
         DATE: function (format, timezone) {
           return $filter('date')(new Date().getTime(), format, timezone);
         },
         LEVEL: function (record) {
-          return jvLogging.getLevelName(record.level);
+          return jvLogLevel.getLevelName(record.level);
         },
         LEVEL_NUM: function (record) {
           return record.level;
@@ -74,97 +74,104 @@ angular.module('jv.angular-logging').service('jvLog', [
   }
 ]);
 'use strict';
-angular.module('jv.angular-logging').factory('jvLogging', function () {
-  var self = {
-      CRITICAL: 50,
-      ERROR: 40,
-      WARNING: 30,
-      INFO: 20,
-      DEBUG: 10,
-      NOTSET: 0
-    };
-  var levelNames = {
-      50: 'CRITICAL',
-      40: 'ERROR',
-      30: 'WARNING',
-      20: 'INFO',
-      10: 'DEBUG',
-      0: 'NOTSET'
-    };
+angular.module('jv.angular-logging').service('jvLogLevel', function () {
+  self = {
+    CRITICAL: 50,
+    ERROR: 40,
+    WARNING: 30,
+    INFO: 20,
+    DEBUG: 10,
+    NOTSET: 0
+  };
+  var levelNames = {};
+  levelNames[self.CRITICAL] = 'CRITICAL';
+  levelNames[self.ERROR] = 'ERROR';
+  levelNames[self.WARNING] = 'WARNING';
+  levelNames[self.INFO] = 'INFO';
+  levelNames[self.DEBUG] = 'DEBUG';
+  levelNames[self.NOTSET] = 'NOTSET';
   self.getLevelName = function (levelNumber) {
     return levelNames[levelNumber];
   };
-  // maintain loggers dictionary
-  var loggers = {};
-  var createLogger = function (name) {
-    /*
-       * Logger instance
-       */
-    return {
-      level: self.NOTSET,
-      handlers: [],
-      info: function () {
-        var args = [].slice.call(arguments, 0);
-        this.handle(this.makeRecord(self.INFO, args));
-      },
-      warn: function (msg) {
-        var args = [].slice.call(arguments, 0);
-        this.handle(this.makeRecord(self.WARNING, args));
-      },
-      error: function (msg) {
-        var args = [].slice.call(arguments, 0);
-        this.handle(this.makeRecord(self.ERROR, args));
-      },
-      debug: function (msg) {
-        var args = [].slice.call(arguments, 0);
-        this.handle(this.makeRecord(self.DEBUG, args));
-      },
-      log: function (msg) {
-        var args = [].slice.call(arguments, 0);
-        this.handle(this.makeRecord(self.NOTSET, args));
-      },
-      makeRecord: function (level, items) {
-        return {
-          name: name,
-          level: level,
-          items: items
-        };
-      },
-      handle: function (record) {
-        if (record.level >= this.level) {
-          if (this.handlers.length > 0) {
-            var i;
-            for (i = 0; i < this.handlers.length; i++) {
-              this.handlers[i].handle(record);
-            }
-          } else {
-            if (!this._warnedAboutNoHandlers) {
-              // warn just once about no handlers issue
-              console.warn('No handlers could be found for logger ' + name);
-              this._warnedAboutNoHandlers = true;
-            }
-          }
-        }
-      },
-      addHandler: function (handler) {
-        this.handlers.push(handler);
-      },
-      setLevel: function (level) {
-        this.level = level;
-      }
-    };
-  };
-  self.getLogger = function (name) {
-    if (name === undefined) {
-      name = 'defaultLogger';
-    }
-    if (!(name in loggers)) {
-      loggers[name] = createLogger(name);
-    }
-    return loggers[name];
-  };
   return self;
 });
+'use strict';
+angular.module('jv.angular-logging').factory('jvLogging', [
+  'jvLogLevel',
+  function (jvLogLevel) {
+    var self = {};
+    // maintain loggers dictionary
+    var loggers = {};
+    var createLogger = function (name) {
+      /*
+       * Logger instance
+       */
+      return {
+        level: jvLogLevel.NOTSET,
+        handlers: [],
+        info: function () {
+          var args = [].slice.call(arguments, 0);
+          this.handle(this.makeRecord(jvLogLevel.INFO, args));
+        },
+        warn: function (msg) {
+          var args = [].slice.call(arguments, 0);
+          this.handle(this.makeRecord(jvLogLevel.WARNING, args));
+        },
+        error: function (msg) {
+          var args = [].slice.call(arguments, 0);
+          this.handle(this.makeRecord(jvLogLevel.ERROR, args));
+        },
+        debug: function (msg) {
+          var args = [].slice.call(arguments, 0);
+          this.handle(this.makeRecord(jvLogLevel.DEBUG, args));
+        },
+        log: function (msg) {
+          var args = [].slice.call(arguments, 0);
+          this.handle(this.makeRecord(jvLogLevel.NOTSET, args));
+        },
+        makeRecord: function (level, items) {
+          return {
+            name: name,
+            level: level,
+            items: items
+          };
+        },
+        handle: function (record) {
+          if (record.level >= this.level) {
+            if (this.handlers.length > 0) {
+              var i;
+              for (i = 0; i < this.handlers.length; i++) {
+                this.handlers[i].handle(record);
+              }
+            } else {
+              if (!this._warnedAboutNoHandlers) {
+                // warn just once about no handlers issue
+                console.warn('No handlers could be found for logger ' + name);
+                this._warnedAboutNoHandlers = true;
+              }
+            }
+          }
+        },
+        addHandler: function (handler) {
+          this.handlers.push(handler);
+        },
+        setLevel: function (level) {
+          this.level = level;
+        }
+      };
+    };
+    self.getLogger = function (name) {
+      if (name === undefined) {
+        name = 'defaultLogger';
+      }
+      if (!(name in loggers)) {
+        loggers[name] = createLogger(name);
+      }
+      return loggers[name];
+    };
+    return self;
+  }
+]);
 'use strict';
 /**
  * @ngdoc service
@@ -183,10 +190,10 @@ angular.module('jv.angular-logging').factory('jvLogging', function () {
  */
 angular.module('jv.angular-logging').service('jvBaseHandler', [
   'jvFormatter',
-  'jvLogging',
-  function (jvFormatter, jvLogging) {
+  'jvLogLevel',
+  function (jvFormatter, jvLogLevel) {
     return {
-      level: jvLogging.NOTSET,
+      level: jvLogLevel.NOTSET,
       formatter: jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'), jvFormatter.NAME, jvFormatter.MESSAGES),
       handle: function (record) {
         if (record.level >= this.level) {
@@ -229,24 +236,24 @@ angular.module('jv.angular-logging').service('jvBaseHandler', [
  */
 angular.module('jv.angular-logging').service('ConsoleHandler', [
   'jvBaseHandler',
-  'jvLogging',
-  function (jvBaseHandler, jvLogging) {
+  'jvLogLevel',
+  function (jvBaseHandler, jvLogLevel) {
     // Public API here
     return function () {
       return angular.extend({
         emit: function (record) {
           var formatted = this.getFormatter().format(record);
           switch (record.level) {
-          case jvLogging.INFO:
+          case jvLogLevel.INFO:
             console.info.apply(console, formatted);
             break;
-          case jvLogging.WARNING:
+          case jvLogLevel.WARNING:
             console.warn.apply(console, formatted);
             break;
-          case jvLogging.ERROR:
+          case jvLogLevel.ERROR:
             console.error.apply(console, formatted);
             break;
-          case jvLogging.DEBUG:
+          case jvLogLevel.DEBUG:
             console.debug.apply(console, formatted);
             break;
           default:
@@ -299,8 +306,8 @@ angular.module('jv.angular-logging').config([
       }
       return $delegate;
     });
-    $provide.decorator('jvLog', function ($delegate, ConsoleHandler) {
-      $delegate.addHandler(new ConsoleHandler());
+    $provide.decorator('jvLogging', function ($delegate, ConsoleHandler) {
+      $delegate.getLogger().addHandler(new ConsoleHandler());
       return $delegate;
     });
   }

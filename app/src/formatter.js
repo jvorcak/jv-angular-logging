@@ -8,13 +8,13 @@
  * Formatter object defines the structure and contents of the log message.
  */
 angular.module('jv.angular-logging')
-  .service('jvFormatter', function($window, $filter, jvLogging) {
+  .service('jvFormatter', function($window, $filter, jvLogLevel) {
     var self = {
         DATE : function(format, timezone) {
           return $filter('date')(new Date().getTime(), format, timezone);
         },
         LEVEL: function(record) {
-          return jvLogging.getLevelName(record.level);
+          return jvLogLevel.getLevelName(record.level);
         },
         LEVEL_NUM: function(record) {
           return record.level;

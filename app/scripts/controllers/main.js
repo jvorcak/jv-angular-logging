@@ -8,7 +8,7 @@
  * Controller of the jvLoggingApp
  */
 angular.module('jvLoggingApp')
-  .controller('MainCtrl', function ($log, jvLog) {
+  .controller('MainCtrl', function (jvLogging, jvLog) {
 
     var person = {
         firstName: 'Jan',
@@ -18,9 +18,9 @@ angular.module('jvLoggingApp')
         }
     };
 
-    $log.info('Person = ', person);
-    $log.warn('Hello world');
-    $log.error('Error', person);
+    var log = jvLogging.getLogger();
 
-    jvLog.info('Test');
+    log.info('Person = ', person);
+    jvLog.warn('Hello world');
+
   });

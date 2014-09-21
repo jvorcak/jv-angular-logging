@@ -12,23 +12,23 @@
  * implementing it's emit method.
  */
 angular.module('jv.angular-logging')
-  .service('ConsoleHandler', function (jvBaseHandler, jvLogging) {
+  .service('ConsoleHandler', function (jvBaseHandler, jvLogLevel) {
     // Public API here
     return function() {
       return angular.extend({
         emit: function (record) {
           var formatted = this.getFormatter().format(record);
           switch(record.level) {
-            case jvLogging.INFO:
+            case jvLogLevel.INFO:
                 console.info.apply(console, formatted);
                 break;
-            case jvLogging.WARNING:
+            case jvLogLevel.WARNING:
                 console.warn.apply(console, formatted);
                 break;
-            case jvLogging.ERROR:
+            case jvLogLevel.ERROR:
                 console.error.apply(console, formatted);
                 break;
-            case jvLogging.DEBUG:
+            case jvLogLevel.DEBUG:
                 console.debug.apply(console, formatted);
                 break;
             default:
