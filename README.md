@@ -42,8 +42,14 @@ jvLog.warn('Let\'s log some object', {firstName: 'Jan', lastName: 'Vorcak'});
 
 angular.module('yourApp', ['jv.angular-logging'])
   .run(function(jvLogging, jvFormatter) {
-    // gets the default logger, identified by `_defaultLogger` name
-    var logger = jvLogging.getLogger();
-    logger.addHandler(new ConsoleHandler());
+    var logger = jvLogging.getLogger('yourAppHandler');
+    var handler = new ConsoleHandler();
+    var formatter = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
+                                       jvFormatter.HASH,
+                                       jvFormatter.NAME,
+                                       jvFormatter.MESSAGES)
+    handler.setFormatter(formatter);
+    logger.addHandler(handler);
   });
 ```
+
