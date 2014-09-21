@@ -1,4 +1,4 @@
-# jvLogging #
+# jv.angular-logging #
 
 Angular module which provides you with flexible and powerful logging system. It supports various logger instances, log levels, handlers and formatters.
 
@@ -66,7 +66,7 @@ angular.module('yourApp', ['jv.angular-logging'])
     var formatter = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
                                        jvFormatter.HASH,
                                        jvFormatter.NAME,
-                                       jvFormatter.MESSAGES)
+                                       jvFormatter.MESSAGES);
     handler.setFormatter(formatter);
     logger.addHandler(handler);
   });
@@ -103,7 +103,7 @@ var handler = new ConsoleHandler();
 var formatter = jvFormatter.create(jvFormatter.DATE('HH:mm:ss,sss'),
                                        jvFormatter.HASH,
                                        jvFormatter.NAME,
-                                       jvFormatter.MESSAGES)
+                                       jvFormatter.MESSAGES);
 handler.setFormatter(formatter);
 ```
 
